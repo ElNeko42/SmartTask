@@ -6,6 +6,7 @@ import com.smarttask.taskallocator.domain.exception.NoAvailableMemberException;
 import com.smarttask.taskallocator.infrastructure.adapter.in.web.dto.ApiError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -34,6 +35,14 @@ public class GlobalExceptionHandler {
         ApiError body = ApiError.validation(
                 HttpStatus.BAD_REQUEST.value(), "Bad Request",
                 "Hay campos inválidos en la petición", fieldErrors);
+        return ResponseEntity.badRequest().body(body);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiError> handleUnreadable(HttpMessageNotReadableException ex) {
+        ApiError body = ApiError.of(
+                HttpStatus.BAD_REQUEST.value(), "Bad Request",
+                "El cuerpo de la petición está ausente o mal formado");
         return ResponseEntity.badRequest().body(body);
     }
 

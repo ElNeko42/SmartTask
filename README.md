@@ -53,6 +53,38 @@ cd backend
 
 La API queda disponible en `http://localhost:8080`.
 
+Endpoints principales:
+
+| Método | Ruta            | Descripción                                   |
+|--------|-----------------|-----------------------------------------------|
+| POST   | `/api/members`  | Da de alta a un miembro (`name`, `maxCapacity`) |
+| GET    | `/api/members`  | Lista el equipo con su carga actual           |
+| POST   | `/api/tasks`    | Envía una tarea y la asigna automáticamente   |
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+La interfaz queda en `http://localhost:5173` y habla con el backend a través de un
+proxy de Vite (`/api` → `http://localhost:8080`), así que basta con tener el backend
+arrancado.
+
+## Tests
+
+```bash
+cd backend
+./mvnw test
+```
+
+Cubren los value objects, la regla `canAccept` y la invariante de capacidad del
+agregado `Member`, la política de asignación y el caso de uso de asignación.
+
 ## Estado
 
-🚧 En construcción — proyecto de portfolio desarrollado de forma incremental.
+✅ Backend (DDD + hexagonal, API REST, tests) y frontend (React + TypeScript)
+funcionando de extremo a extremo. Persistencia in-memory; el puerto `MemberRepository`
+permite sustituirla por JPA sin tocar dominio ni aplicación.
